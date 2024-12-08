@@ -1,0 +1,74 @@
+
+#include <fstream>
+#include <algorithm>
+#include <string>
+#include <iostream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+//function to create a file
+static void createFile(string filename) {
+	ofstream file(filename);
+	file.close();
+}
+
+//function to write to a file
+static void writeToFile(string filename, string text) {
+	ofstream file(filename);
+	file << text;
+	file.close();
+}
+
+//function to read from a file a line at a time and extract the words
+static vector<string> readFromFile(string filename) {
+	ifstream file(filename);
+	vector<string> words;
+	string word;
+	while (file >> word) {
+		words.push_back(word);
+	}
+	file.close();
+	return words;
+}
+
+
+//function to display the contents of a file
+static void displayFileContent(string filename) {
+	ifstream file(filename);
+	string line;
+	while (getline(file, line)) {
+		cout << line << endl;
+	}
+	file.close();
+}
+
+
+//function to calculate the word number
+static int wordCounter(string filename) {
+	int count = 0;
+	ifstream file(filename);
+	string word ;
+	while (file >> word) {
+		count++;
+	}
+	file.close();
+	return count;
+}
+
+//function to find a string and return its count
+static int findString(string filename, string text) {
+	int count = 0;
+	ifstream file(filename);
+	string word;
+	while (file >> word) {
+		if (word == text) {
+			count++;
+		}
+	}
+	file.close();
+	return count;
+}
+
+//function to store the file content 

@@ -1,0 +1,125 @@
+
+#include <fstream>
+#include <algorithm>
+#include <string>
+#include <iostream>
+#include <vector>
+#include <map>
+#include <cctype>
+#include "Word.h"
+
+using namespace std;
+
+
+
+//function to create a file
+static void createFile(string filename) {
+	ofstream file(filename);
+	file.close();
+}
+
+//function to write to a file
+static void writeToFile(string filename, string text)
+{
+	ofstream file(filename);
+	file << text;
+	file.close();
+}
+
+//function to read from a file a line at a time and extract the words
+static vector<string> readFromFile(string filename) {
+	ifstream file(filename);
+	vector<string> words;
+	string word;
+	while (file >> word) {
+		words.push_back(word);
+	}
+	file.close();
+	return words;
+}
+
+
+//function to display the contents of a file
+static void displayFileContent(string filename) {
+	ifstream file(filename);
+	string line;
+	while (getline(file, line)) {
+		cout << line << endl;
+	}
+	file.close();
+}
+
+
+//function to calculate the word number
+static int wordCounter(string filename) {
+	int count = 0;
+	ifstream file(filename);
+	string word ;
+	while (file >> word) {
+		count++;
+	}
+	file.close();
+	return count;
+}
+
+//function to find a string and return its count
+static int findString(string filename, string text) {
+	int count = 0;
+	ifstream file(filename);
+	string word;
+	while (file >> word) {
+		if (word == text) {
+			count++;
+		}
+	}
+	file.close();
+	return count;
+}
+
+static map<char, vector<Word>> storeFileContentbyAlphabet(const string& filename) {
+	map<char, vector<Word>> map;
+	ifstream file(filename);
+	if (file.is_open()) {
+		string word;
+		while (file >> word) {
+			// Convertir le mot en minuscule et trouver la clé
+			char key = tolower(word[0]);
+			Word w(word);
+
+			// Vérifier si la clé existe, sinon l'initialiser
+			if (map.find(key) == map.end()) {
+				map[key] = vector<Word>();
+			}
+
+			// Référence au vecteur des mots pour cette clé
+			auto& vec = map[key];
+
+			// Vérifier si le mot existe déjà dans le vecteur
+			auto it = find(vec.begin(), vec.end(), w);
+			if (it != vec.end()) {
+				// Incrémenter le compteur du mot existant
+				it->increment();
+			}
+			else {
+				// Ajouter le nouveau mot avec un compteur initial de 1
+				vec.push_back(w);
+			}
+		}
+		file.close();
+	}
+	else {
+		cerr << "Erreur : impossible d'ouvrir le fichier " << filename << endl;
+	}
+	return map;
+}
+
+static void displayMap(const map<char, vector<Word>> table) {
+	cout << "Affichage " << endl;
+	for (const auto& it : table) {
+		cout <<"\n" << it.first << " :";
+		for (const auto& it2 : it.second) {
+			it2.display();
+		}
+		cout << "\n\n";
+	}
+}

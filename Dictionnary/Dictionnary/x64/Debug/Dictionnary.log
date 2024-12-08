@@ -1,0 +1,5 @@
+﻿  Dictionnary.cpp
+C:\Users\pc\source\repos\Dictionnary\Dictionnary\Dictionnary.cpp(121,13): warning C4551: function call missing argument list
+  Dictionnary.vcxproj -> C:\Users\pc\source\repos\Dictionnary\x64\Debug\Dictionnary.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
